@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#10131b">
+  <meta name="description"
+    content="Pharmacy Memory من Amino Cure — منصة تفاعلية لمذاكرة الصيدلة ومراجعة المعلومات الدوائية.">
+
+  <title>Pharmacy Memory | Amino Cure</title>
+
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+
+<body>
+
+  <!-- شاشة التحميل -->
+  <div class="app-loader" id="appLoader">
+    <div class="loader-logo">Rx</div>
+    <h1>Pharmacy Memory</h1>
+    <p>ذاكر بذكاء، وتقدم بثبات</p>
+    <div class="loader-spinner"></div>
+  </div>
+
+  <!-- التطبيق -->
+  <div class="app-shell" id="appShell">
+
+    <!-- الشريط العلوي -->
+    <header class="topbar">
+
+      <button class="brand" type="button" data-view="home"
+        aria-label="الصفحة الرئيسية">
+
+        <span class="brand-icon">Rx</span>
+
+        <span class="brand-text">
+          <strong>Pharmacy Memory</strong>
+          <small>by Amino Cure</small>
+        </span>
+
+      </button>
+
+      <div class="topbar-actions">
+
+        <button class="icon-button" id="themeToggle"
+          type="button" aria-label="تغيير المظهر"
+          title="تغيير المظهر">
+          <span id="themeIcon">☀</span>
+        </button>
+
+        <button class="icon-button" id="settingsButton"
+          type="button" aria-label="الإعدادات"
+          title="الإعدادات">
+          ⚙
+        </button>
+
+      </div>
+
+    </header>
+
+    <!-- مساحة المحتوى الرئيسية -->
+    <main class="main-content" id="mainContent">
+
+      <!-- الصفحة الرئيسية -->
+      <section class="view active" id="homeView">
+
+        <!-- بطاقة الترحيب والصورة الشخصية -->
+        <section class="hero-card">
+
+          <div class="hero-background-glow"></div>
+
+          <div class="hero-content">
+
+            <div class="hero-copy">
+
+              <span class="eyebrow">
+                <span class="status-dot"></span>
+                YOUR PHARMACY LEARNING SPACE
+              </span>
+
+              <h1>
+                أهلًا بك في
+                <span class="gradient-text">عالم الصيدلة</span>
+              </h1>
+
+              <p>
+                تعلّم، اختبر معلوماتك، واكتشف نقاط قوتك.
+                خطوة صغيرة كل يوم تصنع فرقًا كبيرًا.
+              </p>
+
+              <button class="primary-button" type="button"
+                data-action="start-study">
+                <span>ابدأ المذاكرة</span>
+                <span aria-hidden="true">←</span>
+              </button>
+
+            </div>
+
+            <!-- الصورة الشخصية والعناصر العائمة -->
+            <div class="hero-profile-area">
+
+              <div class="profile-orbit orbit-one"></div>
+              <div class="profile-orbit orbit-two"></div>
+
+              <div class="profile-frame">
+
+                <img
+                  src="profile.png"
+                  alt="الصورة الشخصية لأمين"
+                  class="profile-image"
+                  id="profileImage"
+                >
+
+              </div>
+
+              <div class="floating-badge floating-pharmacy">
+                <span class="floating-icon">⚕</span>
+                <span>Pharmacy</span>
+              </div>
+
+              <div class="floating-badge floating-design">
+                <span class="floating-icon">✦</span>
+                <span>Design</span>
+              </div>
+
+              <div class="floating-badge floating-content">
+                <span class="floating-icon">✚</span>
+                <span>Health Content</span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="hero-footer">
+            <span>AMINO CURE</span>
+            <span class="hero-footer-line"></span>
+            <span>LEARN • PRACTICE • GROW</span>
+          </div>
+
+        </section>
+
+        <!-- إحصائيات المستخدم -->
+        <section class="stats-grid" aria-label="إحصائيات التعلم">
+
+          <article class="stat-card">
+            <div class="stat-icon purple-icon">✦</div>
+            <div class="stat-info">
+              <span>النقاط المكتسبة</span>
+              <strong id="totalXP">0</strong>
+              <small>XP</small>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon teal-icon">◉</div>
+            <div class="stat-info">
+              <span>دقة الإجابات</span>
+              <strong id="accuracyStat">0%</strong>
+              <small>معدل الإجابة الصحيحة</small>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon green-icon">▤</div>
+            <div class="stat-info">
+              <span>الأسئلة المجاب عنها</span>
+              <strong id="answeredStat">0</strong>
+              <small>سؤال تمت مراجعته</small>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon orange-icon">♨</div>
+            <div class="stat-info">
+              <span>سلسلة المذاكرة</span>
+              <strong id="streakStat">0</strong>
+              <small>يوم متواصل</small>
+            </div>
+          </article>
+
+        </section>
+
+        <!-- هدف اليوم -->
+        <section class="panel daily-goal-panel">
+
+          <div class="section-heading">
+
+            <div>
+              <span class="section-kicker">YOUR DAILY PLAN</span>
+              <h2>هدفك اليومي</h2>
+              <p>تقدم قليلًا كل يوم، واحتفل بإنجازك.</p>
+            </div>
+
+            <span class="section-heading-icon">◎</span>
+
+          </div>
+
+          <div class="daily-goal-content">
+
+            <div class="goal-progress-info">
+              <span>تقدمك اليوم</span>
+              <strong id="dailyGoalText">0 / 10 أسئلة</strong>
+            </div>
+
+            <div class="progress-track">
+              <div class="progress-fill" id="dailyGoalProgress"></div>
+            </div>
+
+            <div class="goal-footer">
+              <span id="dailyGoalMessage">
+                ابدأ أول جلسة مذاكرة اليوم.
+              </span>
+
+              <button class="text-button" type="button"
+                data-action="start-study">
+                ابدأ الآن ←
+              </button>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- طرق المذاكرة -->
+        <section class="content-section">
+
+          <div class="section-heading">
+
+            <div>
+              <span class="section-kicker">CHOOSE YOUR METHOD</span>
+              <h2>كيف تريد أن تذاكر؟</h2>
+              <p>اختر الطريقة التي تناسبك في كل جلسة.</p>
+            </div>
+
+            <span class="section-heading-icon">✧</span>
+
+          </div>
+
+          <div class="study-modes-grid">
+
+            <button class="mode-card mode-featured"
+              type="button" data-mode="flashcards">
+
+              <span class="mode-icon">▣</span>
+              <span class="mode-title">فلاش كارد</span>
+              <span class="mode-description">
+                احفظ المعلومة واختبر استرجاعها.
+              </span>
+              <span class="mode-arrow">←</span>
+
+            </button>
+
+            <button class="mode-card"
+              type="button" data-mode="mcq">
+
+              <span class="mode-icon">☷</span>
+              <span class="mode-title">اختيار من متعدد</span>
+              <span class="mode-description">
+                اختر الإجابة الصحيحة.
+              </span>
+              <span class="mode-arrow">←</span>
+
+            </button>
+
+            <button class="mode-card"
+              type="button" data-mode="truefalse">
+
+              <span class="mode-icon">✓</span>
+              <span class="mode-title">صح أم خطأ</span>
+              <span class="mode-description">
+                اختبر فهمك للمعلومات.
+              </span>
+              <span class="mode-arrow">←</span>
+
+            </button>
+
+            <button class="mode-card"
+              type="button" data-mode="matching">
+
+              <span class="mode-icon">⇄</span>
+              <span class="mode-title">توصيل البطاقات</span>
+              <span class="mode-description">
+                اربط المصطلح بمعناه.
+              </span>
+              <span class="mode-arrow">←</span>
+
+            </button>
+
+            <button class="mode-card"
+              type="button" data-mode="fillblank">
+
+              <span class="mode-icon">✎</span>
+              <span class="mode-title">أكمل الفراغ</span>
+              <span class="mode-description">
+                استرجع المعلومة بنفسك.
+              </span>
+              <span class="mode-arrow">←</span>
+
+            </button>
+
+            <button class="mode-card"
+              type="button" data-mode="speed">
+
+              <span class="mode-icon">◷</span>
+              <span class="mode-title">تحدي السرعة</span>
+              <span class="mode-description">
+                أجب عن الأسئلة في وقت محدد.
+              </span>
+              <span class="mode-arrow">←</span>
+
+            </button>
+
+            <button class="mode-card"
+              type="button" data-mode="whoami">
+
+              <span class="mode-icon">⌕</span>
+              <span class="mode-title">من أنا؟</span>
+              <span class="mode-description">
+                اكتشف الدواء من خلال التلميحات.
+              </span>
+              <span class="mode-arrow">←</span>
+
+            </button>
+
+            <button class="mode-card"
+              type="button" data-mode="mixed">
+
+              <span class="mode-icon">⟳</span>
+              <span class="mode-title">اختبار شامل</span>
+              <span class="mode-description">
+                مزيج من الأسئلة والأنماط المختلفة.
+              </span>
+              <span class="mode-arrow">←</span>
+
+            </button>
+
+          </div>
+
+        </section>
+
+        <!-- الأقسام المهمة -->
+        <section class="content-section">
+
+          <div class="section-heading">
+
+            <div>
+              <span class="section-kicker">PHARMACY KNOWLEDGE</span>
+              <h2>اكتشف أقسام الصيدلة</h2>
+              <p>انتقل إلى المجال الذي تريد مراجعته.</p>
+            </div>
+
+            <button class="text-button" type="button"
+              data-view="sections">
+              كل الأقسام ←
+            </button>
+
+          </div>
+
+          <div class="featured-sections-grid" id="featuredSections">
+
+            <div class="empty-state compact-empty">
+              <span>✚</span>
+              <p>جارٍ تجهيز الأقسام...</p>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- مراجعة الأخطاء -->
+        <section class="panel review-panel">
+
+          <div class="review-panel-icon">↻</div>
+
+          <div class="review-panel-content">
+            <span class="section-kicker">SMART REVISION</span>
+            <h2>راجع أخطاءك وتقدم أكثر</h2>
+            <p>
+              خصص وقتًا للمعلومات التي تحتاج إلى مراجعة إضافية.
+            </p>
+          </div>
+
+          <button class="secondary-button" type="button"
+            data-action="review-mistakes">
+            مراجعة الأخطاء
+          </button>
+
+        </section>
+
+      </section>
+
+      <!-- صفحة الأقسام -->
+      <section class="view" id="sectionsView">
+
+        <div class="page-heading">
+          <span class="section-kicker">EXPLORE PHARMACY</span>
+          <h1>أقسام الصيدلة</h1>
+          <p>اختر القسم الذي تريد دراسته أو مراجعته.</p>
+        </div>
+
+        <div class="search-box">
+          <span>⌕</span>
+          <input
+            type="search"
+            id="sectionSearch"
+            placeholder="ابحث عن قسم أو موضوع..."
+            aria-label="البحث عن قسم"
+          >
+        </div>
+
+        <div class="sections-grid" id="sectionsGrid">
+
+          <div class="empty-state">
+            <span>✚</span>
+            <p>جارٍ تحميل الأقسام...</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- صفحة إعداد جلسة المذاكرة -->
+      <section class="view" id="studyView">
+
+        <div class="page-heading">
+          <span class="section-kicker">PERSONALIZED LEARNING</span>
+          <h1>جهّز جلسة مذاكرتك</h1>
+          <p>حدد خيارات الجلسة قبل أن تبدأ.</p>
+        </div>
+
+        <form id="studySetupForm" class="panel study-setup-form">
+
+          <div class="form-group">
+
+            <label for="studyModeSelect">طريقة المذاكرة</label>
+
+            <select id="studyModeSelect" name="mode">
+              <option value="flashcards">فلاش كارد</option>
+              <option value="mcq">اختيار من متعدد</option>
+              <option value="truefalse">صح أم خطأ</option>
+              <option value="matching">توصيل البطاقات</option>
+              <option value="fillblank">أكمل الفراغ</option>
+              <option value="speed">تحدي السرعة</option>
+              <option value="whoami">من أنا؟</option>
+              <option value="mixed">اختبار شامل</option>
+            </select>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="studySectionSelect">القسم</label>
+
+            <select id="studySectionSelect" name="section">
+              <option value="all">كل الأقسام</option>
+            </select>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="questionCount">عدد الأسئلة</label>
+
+            <select id="questionCount" name="count">
+              <option value="5">5 أسئلة</option>
+              <option value="10" selected>10 أسئلة</option>
+              <option value="20">20 سؤالًا</option>
+              <option value="all">كل الأسئلة المتاحة</option>
+            </select>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="difficultySelect">مستوى الصعوبة</label>
+
+            <select id="difficultySelect" name="difficulty">
+              <option value="all">كل المستويات</option>
+              <option value="easy">سهل</option>
+              <option value="medium">متوسط</option>
+              <option value="hard">متقدم</option>
+            </select>
+
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="randomQuestions" checked>
+            <span>ترتيب الأسئلة عشوائيًا</span>
+          </label>
+
+          <button class="primary-button full-width-button"
+            type="submit">
+            ابدأ الجلسة ←
+          </button>
+
+        </form>
+
+        <!-- مساحة عرض جلسة المذاكرة -->
+        <section id="studySession" class="study-session" hidden>
+
+          <div class="study-session-header">
+
+            <button class="text-button" type="button"
+              data-action="exit-study">
+              ✕ إنهاء الجلسة
+            </button>
+
+            <span id="studySessionMode">جلسة مذاكرة</span>
+
+          </div>
+
+          <div class="session-progress-info">
+            <span id="questionCounter">السؤال 1</span>
+            <span id="sessionScore">النقاط: 0</span>
+          </div>
+
+          <div class="progress-track">
+            <div class="progress-fill" id="sessionProgress"></div>
+          </div>
+
+          <div id="questionArea" class="question-area"></div>
+
+          <div id="answerFeedback" class="answer-feedback"
+            aria-live="polite"></div>
+
+          <div id="studyControls" class="study-controls"></div>
+
+        </section>
+
+      </section>
+
+      <!-- صفحة التقدم والإنجازات -->
+      <section class="view" id="progressView">
+
+        <div class="page-heading">
+          <span class="section-kicker">YOUR ACHIEVEMENTS</span>
+          <h1>تقدمك وإنجازاتك</h1>
+          <p>تابع تطور مستواك واعرف ما يحتاج إلى مراجعة.</p>
+        </div>
+
+        <div class="stats-grid progress-stats-grid">
+
+          <article class="stat-card">
+            <div class="stat-icon purple-icon">✦</div>
+            <div class="stat-info">
+              <span>إجمالي النقاط</span>
+              <strong id="progressXP">0</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon teal-icon">✓</div>
+            <div class="stat-info">
+              <span>الإجابات الصحيحة</span>
+              <strong id="correctAnswers">0</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon green-icon">▤</div>
+            <div class="stat-info">
+              <span>الجلسات المكتملة</span>
+              <strong id="completedSessions">0</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon orange-icon">♨</div>
+            <div class="stat-info">
+              <span>أيام المذاكرة</span>
+              <strong id="studyDays">0</strong>
+            </div>
+          </article>
+
+        </div>
+
+        <section class="panel">
+
+          <div class="section-heading">
+            <div>
+              <span class="section-kicker">TOPIC MASTERY</span>
+              <h2>مستواك في الأقسام</h2>
+            </div>
+          </div>
+
+          <div id="topicProgressList" class="topic-progress-list">
+            <p class="muted-text">ستظهر بيانات تقدمك هنا.</p>
+          </div>
+
+        </section>
+
+        <section class="panel">
+
+          <div class="section-heading">
+            <div>
+              <span class="section-kicker">YOUR BADGES</span>
+              <h2>أوسمة الإنجاز</h2>
+            </div>
+          </div>
+
+          <div id="achievementsGrid" class="achievements-grid">
+            <p class="muted-text">ابدأ المذاكرة لفتح إنجازاتك.</p>
+          </div>
+
+        </section>
+
+      </section>
+
+      <!-- صفحة المكتبة -->
+      <section class="view" id="libraryView">
+
+        <div class="page-heading">
+          <span class="section-kicker">YOUR PERSONAL LIBRARY</span>
+          <h1>مكتبتي</h1>
+          <p>أنشئ بطاقاتك وأسئلتك الخاصة وراجعها وقتما تريد.</p>
+        </div>
+
+        <div class="library-actions">
+
+          <button class="primary-button" type="button"
+            data-action="add-card">
+            <span>＋</span>
+            إضافة بطاقة
+          </button>
+
+          <button class="secondary-button" type="button"
+            data-action="add-note">
+            ＋ إضافة ملاحظة
+          </button>
+
+        </div>
+
+        <div class="search-box">
+          <span>⌕</span>
+          <input
+            type="search"
+            id="librarySearch"
+            placeholder="ابحث في مكتبتك..."
+            aria-label="البحث في المكتبة"
+          >
+        </div>
+
+        <div class="library-tabs" role="tablist">
+
+          <button class="library-tab active"
+            type="button" data-library-tab="cards">
+            بطاقاتي
+          </button>
+
+          <button class="library-tab"
+            type="button" data-library-tab="notes">
+            ملاحظاتي
+          </button>
+
+          <button class="library-tab"
+            type="button" data-library-tab="mistakes">
+            أخطائي
+          </button>
+
+        </div>
+
+        <div id="libraryContent" class="library-content">
+
+          <div class="empty-state">
+            <span>▤</span>
+            <h3>مكتبتك الشخصية</h3>
+            <p>أضف أول بطاقة أو ملاحظة لتبدأ.</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- صفحة الإعدادات -->
+      <section class="view" id="settingsView">
+
+        <div class="page-heading">
+          <span class="section-kicker">PERSONALIZE YOUR APP</span>
+          <h1>الإعدادات</h1>
+          <p>خصص تجربة المذاكرة واحفظ بياناتك.</p>
+        </div>
+
+        <section class="panel settings-panel">
+
+          <h2>المظهر</h2>
+
+          <div class="setting-row">
+            <div>
+              <strong>الوضع الداكن</strong>
+              <p>مظهر مريح للعين أثناء المذاكرة.</p>
+            </div>
+
+            <button class="secondary-button"
+              type="button" id="settingsThemeToggle">
+              تغيير المظهر
+            </button>
+          </div>
+
+        </section>
+
+        <section class="panel settings-panel">
+
+          <h2>البيانات والنسخ الاحتياطي</h2>
+
+          <p class="muted-text">
+            احتفظ بنسخة من تقدمك وبطاقاتك لتتمكن من استعادتها عند الحاجة.
+          </p>
+
+          <div class="settings-actions">
+
+            <button class="secondary-button"
+              type="button" id="exportDataButton">
+              تصدير نسخة احتياطية
+            </button>
+
+            <button class="secondary-button"
+              type="button" id="importDataButton">
+              استيراد نسخة احتياطية
+            </button>
+
+            <input type="file" id="importDataFile"
+              accept=".json,application/json" hidden>
+
+          </div>
+
+        </section>
+
+        <section class="panel settings-panel">
+
+          <h2>عن التطبيق</h2>
+
+          <div class="about-app-brand">
+            <span class="brand-icon">Rx</span>
+
+            <div>
+              <strong>Pharmacy Memory</strong>
+              <p>جزء من هوية Amino Cure التعليمية.</p>
+            </div>
+          </div>
+
+          <p class="medical-disclaimer">
+            التطبيق وسيلة تعليمية لمراجعة المعلومات الصيدلانية،
+            ولا يُغني عن المراجع العلمية الموثوقة أو التقييم المهني.
+            لا تعتمد على المعلومات التعليمية وحدها لاتخاذ قرارات علاجية
+            تخص مريضًا بعينه.
+          </p>
+
+        </section>
+
+      </section>
+
+    </main>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav" aria-label="التنقل الرئيسي">
+
+      <button class="nav-item active"
+        type="button" data-view="home">
+        <span class="nav-icon">⌂</span>
+        <span>الرئيسية</span>
+      </button>
+
+      <button class="nav-item"
+        type="button" data-view="sections">
+        <span class="nav-icon">▦</span>
+        <span>الأقسام</span>
+      </button>
+
+      <button class="nav-item nav-study"
+        type="button" data-view="study">
+        <span class="nav-icon">✚</span>
+        <span>المذاكرة</span>
+      </button>
+
+      <button class="nav-item"
+        type="button" data-view="progress">
+        <span class="nav-icon">◔</span>
+        <span>تقدمي</span>
+      </button>
+
+      <button class="nav-item"
+        type="button" data-view="library">
+        <span class="nav-icon">▤</span>
+        <span>مكتبتي</span>
+      </button>
+
+    </nav>
+
+  </div>
+
+  <!-- نافذة إضافة بطاقة أو ملاحظة -->
+  <dialog class="app-dialog" id="editorDialog">
+
+    <form id="editorForm" class="dialog-form">
+
+      <div class="dialog-header">
+
+        <div>
+          <span class="section-kicker">PERSONAL LIBRARY</span>
+          <h2 id="editorTitle">إضافة بطاقة</h2>
+        </div>
+
+        <button class="icon-button" type="button"
+          data-action="close-editor" aria-label="إغلاق">
+          ✕
+        </button>
+
+      </div>
+
+      <input type="hidden" id="editorItemId">
+      <input type="hidden" id="editorItemType" value="card">
+
+      <div class="form-group">
+
+        <label for="editorItemTitle">العنوان أو السؤال</label>
+
+        <input type="text" id="editorItemTitle"
+          placeholder="اكتب عنوان البطاقة أو السؤال..."
+          required maxlength="300">
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="editorItemAnswer">الإجابة أو المحتوى</label>
+
+        <textarea id="editorItemAnswer"
+          placeholder="اكتب الإجابة أو المعلومة..."
+          required rows="5" maxlength="10000"></textarea>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="editorItemSection">القسم</label>
+
+        <select id="editorItemSection">
+          <option value="custom">بطاقاتي الخاصة</option>
+        </select>
+
+      </div>
+
+      <div class="dialog-actions">
+
+        <button class="secondary-button" type="button"
+          data-action="close-editor">
+          إلغاء
+        </button>
+
+        <button class="primary-button" type="submit">
+          حفظ
+        </button>
+
+      </div>
+
+    </form>
+
+  </dialog>
+
+  <!-- رسائل التطبيق -->
+  <div class="toast-container" id="toastContainer"
+    aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ملفات التطبيق -->
+  <script src="data.js"
+    onerror="document.getElementById('appLoader').innerHTML='<p>تعذّر تحميل data.js. تأكد من وجود الملف بجانب index.html.</p>';">
+  </script>
+
+  <script src="app.js"
+    onerror="document.getElementById('appLoader').innerHTML='<p>تعذّر تحميل app.js. تأكد من وجود الملف بجانب index.html.</p>';">
+  </script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./sw.js").catch(function () {
+          console.log("سيعمل التطبيق دون تخزين مؤقت إذا تعذّر تسجيل Service Worker.");
+        });
+      });
+    }
+  </script>
+
+</body>
+    </html>
