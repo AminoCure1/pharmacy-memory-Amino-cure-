@@ -5,6 +5,22 @@
 ================================================== */
 
 "use strict";
+/* توحيد أسماء الحقول بين data.js و app.js */
+(function normalizeData() {
+  if (Array.isArray(window.SECTIONS)) {
+    window.SECTIONS.forEach(s => {
+      s.title = s.title || s.name;
+    });
+  }
+  if (Array.isArray(window.STUDY_CARDS)) {
+    window.STUDY_CARDS.forEach(c => {
+      c.section = c.section || c.sectionId;
+      if (typeof c.answer === "boolean") {
+        c.answer = c.answer ? "صح" : "خطأ";
+      }
+    });
+  }
+})();
 
 /* ================================================
    1. إعدادات التطبيق
@@ -414,8 +430,7 @@ function renderApplicationShell() {
           data-page="home"
           aria-label="الصفحة الرئيسية"
         >
-          <span class="pm-brand-mark">Rx</span>
-
+          <span class="pm-brand-mark"><img src="logo1.png" alt="" onerror="this.parentNode.textContent='Rx'"></span>
           <span class="pm-brand-text">
             <strong>Pharmacy Memory</strong>
             <small>Amino Cure</small>
@@ -608,21 +623,14 @@ function renderHome() {
 
           <div class="pm-orbit-ring"></div>
 
-          <div class="pm-profile-placeholder">
+                    <div class="pm-profile-placeholder">
             <span>Rx</span>
+            <img src="profile.png" alt="" class="pm-profile-img" onerror="this.remove()">
           </div>
 
-          <span class="pm-floating-label pm-float-pharmacy">
-            💊 صيدلة
-          </span>
-
-          <span class="pm-floating-label pm-float-design">
-            ✦ تصميم
-          </span>
-
-          <span class="pm-floating-label pm-float-content">
-            ♧ محتوى صحي
-          </span>
+                    <span class="pm-floating-label pm-float-pharmacy">💊 أدوية</span>
+          <span class="pm-floating-label pm-float-design">🎯 اختبارات</span>
+          <span class="pm-floating-label pm-float-content">🔁 مراجعة</span>
 
         </div>
 
@@ -867,7 +875,7 @@ function renderHome() {
 
 
     <footer class="pm-footer">
-      <span class="pm-footer-mark">Rx</span>
+      <span class="pm-footer-mark"><img src="logo.png" alt="" onerror="this.parentNode.textContent='Rx'"></span>
       <strong>Amino Cure</strong>
       <p>معلومة أبسط، تعلّم أفضل.</p>
       <small>
@@ -1083,38 +1091,12 @@ function renderStudySetup(options = {}) {
         عدد الأسئلة أو البطاقات
       </label>
 
-      <div class="pm-count-options">
-
-        <button
-          type="button"
-          data-action="select-count"
-          data-count="5"
-          class="pm-count-button"
-        >5</button>
-
-        <button
-          type="button"
-          data-action="select-count"
-          data-count="10"
-          class="pm-count-button is-selected"
-        >10</button>
-
-        <button
-          type="button"
-          data-action="select-count"
-          data-count="20"
-          class="pm-count-button"
-        >20</button>
-
-        <button
-          type="button"
-          data-action="select-count"
-          data-count="all"
-          class="pm-count-button"
-        >الكل</button>
-
+            <div class="pm-count-options">
+        ${["5", "10", "20", "50", "100", "all"].map(c => `
+          <button type="button" data-action="select-count" data-count="${c}"
+            class="pm-count-button${c === "10" ? " is-selected" : ""}">${c === "all" ? "الكل" : c}</button>
+        `).join("")}
       </div>
-
       <p class="pm-setup-note">
         يوجد حاليًا ${formatNumber(totalCards)} بطاقة تعليمية
         في قاعدة البيانات، وقد يختلف العدد حسب القسم.
@@ -1172,28 +1154,29 @@ function getSelectedStudyCount() {
 function getFilteredStudyCards() {
   const section = $("#pmStudySection")?.value || "all";
   const difficulty = $("#pmStudyDifficulty")?.value || "all";
-
-  let cards = getAllCards().filter(card => {
-    const matchesSection =
-      section === "all" || card.section === section;
-
-    const matchesDifficulty =
-      difficulty === "all" ||
-      card.difficulty === difficulty;
-
-    return matchesSection && matchesDifficulty;
-  });
-
   const mode = getSelectedStudyMode();
 
-  if (mode === "mistakes") {
-    const mistakeIds = new Set(
+  let cards = getAllCards().filter(card => {
+    const okSection = section === "all" || card.section === section;
+    const okDiff = difficulty === "all" || card.difficulty === difficulty;
+    return okSection && okDiff;
+  });
+
+  if (mode === "mcq") {
+    cards = cards.filter(c => (c.options || []).length >= 2);
+  } else if (mode === "truefalse") {
+    cards = cards.filter(c => c.type === "truefalse");
+  } else if (mode === "fillblank") {
+    cards = cards.filter(c =>
+      c.type !== "truefalse" && String(c.answer).length <= 30
+    );
+  } else if (mode === "matching" || mode === "whoami") {
+    cards = cards.filter(c => c.type !== "truefalse");
+  } else if (mode === "mistakes") {
+    const ids = new Set(
       appState.profile.mistakes.map(item => String(item.id))
     );
-
-    cards = cards.filter(card => {
-      return mistakeIds.has(String(card.id));
-    });
+    cards = cards.filter(c => ids.has(String(c.id)));
   }
 
   return cards;
@@ -1307,6 +1290,8 @@ function renderCurrentStudyCard() {
     content = renderFillBlankCard(card);
   } else if (mode === "whoami") {
     content = renderWhoAmICard(card);
+    } else if ((card.options || []).length < 2) {
+    content = renderFlashcard(card);
   } else {
     content = renderQuestionCard(card);
   }
@@ -3441,4 +3426,4 @@ if (document.readyState === "loading") {
   );
 } else {
   initializeApplication();
-              }
+}
