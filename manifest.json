@@ -1,19 +1,15 @@
 {
+  "id": "/pharmacy-memory-Amino-cure-/",
   "name": "Pharmacy Memory",
   "short_name": "PharmMemory",
   "lang": "ar",
   "dir": "rtl",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/pharmacy-memory-Amino-cure-/",
+  "scope": "/pharmacy-memory-Amino-cure-/",
   "display": "standalone",
   "background_color": "#0b100f",
   "theme_color": "#7654c8",
   "icons": [
-    {
-      "src": "icon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    }
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ]
 }
