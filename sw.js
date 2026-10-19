@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "pharmacy-memory-v3";
+const CACHE_NAME = "pharmacy-memory-v2";
 
 const APP_FILES = [
   "./",
