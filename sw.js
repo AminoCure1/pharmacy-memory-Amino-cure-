@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "pharmacy-memory-v2";
+const CACHE_NAME = "pharmacy-memory-v9";
 
 const APP_FILES = [
   "./",
@@ -9,7 +9,8 @@ const APP_FILES = [
   "./data.js",
   "./app.js",
   "./manifest.json",
-  "./icon.svg"
+  "./icon.svg",
+  "./custom.js",
 ];
 
 self.addEventListener("install", event => {
