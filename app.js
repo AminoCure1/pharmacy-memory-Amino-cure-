@@ -430,7 +430,7 @@ function renderApplicationShell() {
           data-page="home"
           aria-label="الصفحة الرئيسية"
         >
-          <span class="pm-brand-mark"><img src="logo1.png" alt="" onerror="this.parentNode.textContent='Rx'"></span>
+          <span class="pm-brand-mark"><img src="logo.png" alt="" onerror="this.parentNode.textContent='Rx'"></span>
           <span class="pm-brand-text">
             <strong>Pharmacy Memory</strong>
             <small>Amino Cure</small>
@@ -3004,12 +3004,13 @@ function applySavedTheme() {
 }
 
 function toggleTheme() {
-  const current =
-    document.documentElement.dataset.theme || "dark";
-
+  const root = document.documentElement;
+  const current = root.dataset.theme || "dark";
   const next = current === "dark" ? "light" : "dark";
 
-  document.documentElement.dataset.theme = next;
+  root.classList.add("pm-no-transition");
+
+  root.dataset.theme = next;
 
   if (rootElement) {
     rootElement.dataset.theme = next;
@@ -3018,6 +3019,13 @@ function toggleTheme() {
   try {
     localStorage.setItem("pharmacy-memory-theme", next);
   } catch (_) {}
+
+  /* إزالة الكلاس بعد رسم الثيم الجديد */
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      root.classList.remove("pm-no-transition");
+    });
+  });
 
   showToast(
     next === "dark"
