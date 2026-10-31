@@ -3461,3 +3461,42 @@ html[dir="ltr"] .pm-answer-option { text-align: left; }
 html[dir="ltr"] .pm-category-arrow { left: auto; right: 13px; }
 html[dir="ltr"] .pm-modal-close { float: right; margin-left: 0; margin-right: -5px; }
 html[dir="ltr"] .pm-mode-row:hover { transform: translateX(3px); }
+.pm-brand-mark { overflow: hidden; padding: 0; }
+.pm-brand-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pm-brand-mark {
+  width: 74px;
+  height: 74px;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.pm-brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.pm-footer-mark {
+  width: 74px;
+  height: 74px;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.pm-footer-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+html.pm-no-transition *,
+html.pm-no-transition *::before,
+html.pm-no-transition *::after {
+  transition: none !important;
+  animation: none !important;
+}
